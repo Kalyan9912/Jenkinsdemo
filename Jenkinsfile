@@ -2,6 +2,12 @@ pipeline {
     agent any
 
     stages {
+        stage('Checkout') {
+            steps {
+                echo 'Checking....'
+                git branch='main' url='https://github.com/Kalyan9912/Jenkinsdemo/edit/main/Jenkinsfile'
+            }
+        }
         stage('Clone') {
             steps {
                 echo 'Cloning project (skipped as this is local)...'
