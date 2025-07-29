@@ -1,0 +1,27 @@
+- hosts: all
+  become: yes
+  tasks:
+    - name: Install pip3 and Flask
+      package:
+        name:
+          - python3
+          - python3-pip
+        state: present
+
+    - name: Install Flask
+      pip:
+        name: flask
+
+    - name: Copy application to EC2
+      copy:
+        src: ../app.py
+        dest: /home/ec2-user/app.py
+        mode: '0755'
+
+    - name: Kill existing Flask process (if running)
+      shell: |
+        pkill -f "python3 /home/ec2-user/app.py" || true
+
+    - name: Start Flask App
+      shell: |
+        nohup python3 /home/ec2-user/app.py > /home/ec2-user/app.log 2>&1 &
